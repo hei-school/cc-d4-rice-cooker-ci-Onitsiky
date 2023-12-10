@@ -44,23 +44,49 @@ def handle_rc_menu()
                         4. Start cooking/ End cooking
                     Your choice: "
 
-    show_menu(menu_message, [1,2], nil, method(:handle_rc))
+    show_menu(menu_message, [1,2, 3], nil, method(:handle_rc))
     block.call if block
 end
 
-def plug_rc_menu(choice)
+def update_rc_state(choice, attribute, opposite_value_str, opposite_message, current_message)
+    puts "Enter the rice cooker id (Must be a number) :"
+    id = gets.chomp
+    if id.match?(/^\d+$/)
+      to_update = get_rc(id.to_i)
+      if to_update
+        current_state = to_update.public_send(attribute)
+        opposite_value = current_state ? false : true
+        change_state(id.to_i, attribute, opposite_value)
+        puts "Rice cooker id: #{id} #{current_state ? opposite_message : current_message}"
+      end
+    else
+      puts "Invalid, the id must be a number"
+      send(choice)
+    end
+  end
+  
+  def plug_rc_in_out(choice)
+    update_rc_state(choice, "is_plugged", "is now plugged out", "is now plugged in", "updated")
+  end
+  
+  def change_operational_state(choice)
+    update_rc_state(choice, "is_operational", "is now non-operational", "is now operational", "updated")
+  end
+  
+
+def start_end_cooking(choice)
     puts "Enter the rice cooker id (Must be a number) :"
     id = gets.chomp
     if id.match?(/^\d+$/)
         to_update = get_rc(id.to_i)
         if (to_update)
-            actual_state = to_update.is_plugged
+            actual_state = to_update.is_cooking
             if(actual_state)
-                change_state(id.to_i, "is_plugged", false)
-                puts "Rice cooker id: #{id} is now plugged out"
+                change_state(id.to_i, "is_cooking", false)
+                puts "Rice cooker id: #{id} stopped cooking"
             else
-                change_state(id.to_i, "is_plugged", true)
-                puts "Rice cooker id: #{id} is now plugged in"
+                change_state(id.to_i, "is_cooking", true)
+                puts "Rice cooker id: #{id} started cooking"
             end
         end
     else
@@ -69,14 +95,16 @@ def plug_rc_menu(choice)
     end
 end
 
-
 def handle_rc(choice)
     case choice
     when 1
         puts get_rc_list
         show
     when 2
-        plug_rc_menu(choice)
+        plug_rc_in_out(choice)
+        show
+    when 3
+        change_operational_state(choice)
         show
     end
 end

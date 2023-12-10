@@ -6,6 +6,7 @@ def show_menu(message, valid_choices, leave_action, operation)
         if(valid_choices.include?(choice))
             operation.call(choice)
             show_menu(message, valid_choices, leave_action, operation) if choice != leave_action
+            return if choice == leave_action
         else
             puts "Invalid, your input must be one of #{valid_choices}"
             show_menu(message, valid_choices, leave_action, operation)
