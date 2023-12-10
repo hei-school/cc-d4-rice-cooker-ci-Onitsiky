@@ -41,9 +41,10 @@ def handle_rc_menu()
                         1. List rice cookers
                         2. Plug in/out rice cooker
                         3. Change operational state
+                        4. Return to main menu
                     Your choice: "
 
-    show_menu(menu_message, [1,2,3], nil, method(:handle_rc))
+    show_menu(menu_message, [1,2,3,4], nil, method(:handle_rc))
 end
 
 def update_rc_state(choice, attribute, opposite_value_str, opposite_message, current_message)
@@ -91,6 +92,8 @@ def handle_rc(choice)
     when 3
         change_operational_state(choice)
         show
+    when 4
+        show
     end
 end
 
@@ -98,7 +101,7 @@ def cook_menu()
     menu_message = "Choose an action:
                         1. Cook rice
                         2. Boil water
-                        3. Steam
+                        3. Return to main menu
                     Your choice: "
 
     show_menu(menu_message, [1,2,3], nil, method(:handle_cooks))
@@ -110,11 +113,39 @@ def handle_cooks(choice)
             cook_rice
             show
         when 2
-            puts "boil"
+            boil_water
+            show
         when 3
-            puts "steam"
+            show
     end
 end
+
+def boil_water()
+    puts "Enter the rice cooker id to use: "
+    rc = gets.chomp
+    puts "Enter the number of water cups: "
+    cups = gets.chomp
+    if rc.match?(/^\d+$/)
+        if cups.match?(/^\d+$/)
+            if(cups.to_i <= 0)
+                puts "Add more water"
+                cook_rice
+            else
+                if(check_rc(rc.to_i))
+                    start_cooking(rc.to_i)
+                else
+                    show
+                end
+            end
+        else
+            puts "Invalid, the water cups must be a number."
+        end
+
+    else
+        puts "Invalid rice cooker id."
+    end
+end
+
 
 def cook_rice()
     puts "Enter the rice cooker id to use: "
@@ -158,7 +189,8 @@ end
 
 def check_rc(id)
     target = get_rc(id)
-    error_message = ""
+    if(target)
+        error_message = ""
     if target.is_cooking == false && target.is_operational == true  && target.is_plugged == true
         return true
     else
@@ -173,6 +205,9 @@ def check_rc(id)
         end
         print error_message
         return false
+    end
+    else
+        puts "Rice cooker id:#{id} does not exist."
     end
 end
         
