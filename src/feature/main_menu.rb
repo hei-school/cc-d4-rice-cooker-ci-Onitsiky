@@ -41,11 +41,9 @@ def handle_rc_menu()
                         1. List rice cookers
                         2. Plug in/out rice cooker
                         3. Change operational state
-                        4. Start cooking/ End cooking
                     Your choice: "
 
-    show_menu(menu_message, [1,2, 3], nil, method(:handle_rc))
-    block.call if block
+    show_menu(menu_message, [1,2,3], nil, method(:handle_rc))
 end
 
 def update_rc_state(choice, attribute, opposite_value_str, opposite_message, current_message)
@@ -74,24 +72,11 @@ def update_rc_state(choice, attribute, opposite_value_str, opposite_message, cur
   end
   
 
-def start_end_cooking(choice)
-    puts "Enter the rice cooker id (Must be a number) :"
-    id = gets.chomp
-    if id.match?(/^\d+$/)
-        to_update = get_rc(id.to_i)
-        if (to_update)
-            actual_state = to_update.is_cooking
-            if(actual_state)
-                change_state(id.to_i, "is_cooking", false)
-                puts "Rice cooker id: #{id} stopped cooking"
-            else
-                change_state(id.to_i, "is_cooking", true)
-                puts "Rice cooker id: #{id} started cooking"
-            end
-        end
-    else
-        puts "Invalid, the id must be a number"
-        plug_rc_menu(choice)
+def start_cooking(id)
+    to_update = get_rc(id.to_i)
+    if (to_update)
+        change_state(id.to_i, "is_cooking", true)
+        puts "Rice cooker id: #{id} started cooking"
     end
 end
 
@@ -109,6 +94,92 @@ def handle_rc(choice)
     end
 end
 
+def cook_menu()
+    menu_message = "Choose an action:
+                        1. Cook rice
+                        2. Boil water
+                        3. Steam
+                    Your choice: "
+
+    show_menu(menu_message, [1,2,3], nil, method(:handle_cooks))
+end
+
+def handle_cooks(choice)
+    case choice
+        when 1
+            cook_rice
+            show
+        when 2
+            puts "boil"
+        when 3
+            puts "steam"
+    end
+end
+
+def cook_rice()
+    puts "Enter the rice cooker id to use: "
+    rc = gets.chomp
+    puts "Enter the number of water cups: "
+    cups = gets.chomp
+    puts "Enter the number of rice cups(should be 1/2 of water cups number): "
+    rice = gets.chomp
+    if rc.match?(/^\d+$/)
+        if cups.match?(/^\d+$/)
+            if(cups.to_i <= 0)
+                puts "Add more water"
+                cook_rice
+            else
+                if rice.match?(/^\d+$/)
+                    if(rice.to_i <= 0)
+                        puts "Add more rice"
+                    else
+                        if cups.to_i < rice.to_i * 2
+                            puts "Add more water"
+                            cook_rice
+                        else
+                            if(check_rc(rc.to_i))
+                                start_cooking(rc.to_i)
+                            else
+                                show
+                            end
+                        end
+                    end
+                else
+                    puts "Invalid, the rice cups must be a number."
+                end
+            end
+        else
+            puts "Invalid, the water cups must be a number."
+        end
+    else
+        puts "Invalid rice cooker id."
+    end
+end
+
+def check_rc(id)
+    target = get_rc(id)
+    error_message = ""
+    if target.is_cooking == false && target.is_operational == true  && target.is_plugged == true
+        return true
+    else
+        if target.is_cooking == true
+            error_message += "Rice cooker id:#{id} is still cooking. "
+        end
+        if target.is_operational == false
+            error_message += "Rice cooker id:#{id} is not operational. "
+        end
+        if target.is_plugged == false
+            error_message += "Rice cooker id:#{id} is not plugged in. "
+        end
+        print error_message
+        return false
+    end
+end
+        
+
+
+
+
  def choose_action(choice)
     case choice
     when 1
@@ -116,7 +187,7 @@ end
     when 2
         handle_rc_menu
     when 3
-        puts "cook"
+        cook_menu 
     when 4
         puts "Goodbye !"
         return
