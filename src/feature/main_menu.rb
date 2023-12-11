@@ -14,6 +14,17 @@ def show
   show_menu(MAIN_MENU_MESSAGE, VALID_CHOICES, 4, method(:choose_action))
 end
 
+def get_user_input
+  puts 'Enter your rice cooker id (Must be a number) :'
+  id = gets.chomp
+  puts "Is this rice cooker operational ?
+          1. yes
+          2. no
+      Your choice: "
+  is_operational = gets.chomp
+  [id, is_operational]
+end
+
 def add_action(&block)
   id, is_operational = get_user_input
 
@@ -153,14 +164,14 @@ def cook_rice
   rice = gets.chomp
 
   if valid_rc?(rc_id) && valid_cups?(cups) && valid_rice?(rice, cups)
-    start_cooking(rc.to_i)
+    start_cooking(rc_id.to_i)
   else
     show
   end
 end
 
-def valid_rc?(_target)
-  return true if rc.match?(/^\d+$/)
+def valid_rc?(rc_id)
+  return true if rc_id.match?(/^\d+$/)
 
   puts 'Invalid rice cooker id.'
   false
