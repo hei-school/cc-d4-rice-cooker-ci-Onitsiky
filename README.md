@@ -31,4 +31,9 @@ To run the application, just enter the following command:
 When leaving the application, it doesn't directly leave but still loop on the menu. 
 
 ## Linter
-As linter, I used __rubocop__ 
+As linter, I used __rubocop__ .
+
+You can install rubocop [here](https://docs.rubocop.org/rubocop/1.58/installation.html), and to check, just run:
+```shell
+    rubocop
+```
