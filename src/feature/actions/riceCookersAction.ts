@@ -12,16 +12,26 @@ export const getRiceCookersList: () => RiceCooker[] = () => {
     return riceCookers;
 }
 
-const getRiceCookerById: (id: number) => RiceCooker | undefined = (id: number) => {
+export const getRiceCookerById: (id: number) => RiceCooker | undefined = (id: number) => {
     return riceCookers.find(item => item.id == id);
 }
 
-const changeState: (id: number, targetAttribute: string, state: boolean) => void = (id: number, targetAttribute: string, state: boolean) => {
+export const changeState: (id: number, targetAttribute: string, state: boolean) => void = (id: number, targetAttribute: string, state: boolean) => {
     let targettedRiceCooker: RiceCooker | undefined = getRiceCookerById(id);
     if(targettedRiceCooker) {
-        if(targetAttribute == 'isOperational') targettedRiceCooker.isOperational == state
-        else if (targetAttribute == 'isPlugged') targettedRiceCooker.isPlugged == state
-        else if (targetAttribute == 'isCooking') targettedRiceCooker.isCooking == state
+        const index = riceCookers.findIndex((rc) => rc.id === targettedRiceCooker?.id);
+        if(targetAttribute == 'isOperational') {
+            targettedRiceCooker.isOperational = state
+            riceCookers[index] = targettedRiceCooker;
+        }
+        else if (targetAttribute == 'isPlugged') {
+            targettedRiceCooker.isPlugged = state
+            riceCookers[index] = targettedRiceCooker;
+        }
+        else if (targetAttribute == 'isCooking') {
+            targettedRiceCooker.isCooking = state
+            riceCookers[index] = targettedRiceCooker;
+        }
         else console.log('The target attribute is not valid')
     } else {
         console.log(`The rice cooker with id ${id} does not exist.`)
