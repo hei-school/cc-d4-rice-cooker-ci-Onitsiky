@@ -20,17 +20,32 @@ function plug_in_out(): void {
     const target: RiceCooker | undefined = getRiceCookerById(input);
     if(target) {
         let currentState: boolean = target.isPlugged;
-        console.log(currentState);
-        let oppositeState: boolean = currentState === true ? false : true;
-        console.log(oppositeState);
-        
+        let oppositeState: boolean = currentState === true ? false : true;        
         changeState(input, 'isPlugged', oppositeState);
+        console.log(`Rice cooker id: ${input} plugged ${oppositeState == true ? 'in.' : 'out.'}`);
+        
     } else{
         console.error('Rice cooker with specified id not found.');
         show();
         
     }
 
+}
+
+function change_op_state(): void {
+    let input = + readline.question("Enter the rice cooker id (Must be a number) : ");
+    const target: RiceCooker | undefined = getRiceCookerById(input);
+    if(target) {
+        let currentState: boolean = target.isPlugged;
+        let oppositeState: boolean = currentState === true ? false : true;        
+        changeState(input, 'isOperationnal', oppositeState);
+        console.log(`Rice cooker id: ${input} successfully updated.`);
+        
+    } else{
+        console.error('Rice cooker with specified id not found.');
+        show();
+        
+    }
 }
 
 function handle_rc(choice: number): void {
@@ -42,7 +57,8 @@ function handle_rc(choice: number): void {
             plug_in_out();
             show();
         case 3:
-            console.log("op state")
+            change_op_state();
+            show();
         case 4:
             show()
     }
