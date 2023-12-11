@@ -29,3 +29,6 @@ To run the application, just enter the following command:
 
 ## Bug :bug:
 When leaving the application, it doesn't directly leave but still loop on the menu. 
+
+## Linter
+As linter, I used __rubocop__ 
