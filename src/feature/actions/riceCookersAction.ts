@@ -37,3 +37,13 @@ export const changeState: (id: number, targetAttribute: string, state: boolean) 
         console.log(`The rice cooker with id ${id} does not exist.`)
     }
 }
+
+export const startCooking: (id: number) => void = (id: number) => {
+    let toUpdate: RiceCooker | undefined = getRiceCookerById(id);
+    if(toUpdate) {
+        let currentState: boolean = toUpdate.isCooking;
+        let oppositeState: boolean = currentState === true ? false : true;
+        changeState(id, 'isCooking', oppositeState);
+        console.log(`Rice cooker id: ${id} started cooking.`);
+    }
+}

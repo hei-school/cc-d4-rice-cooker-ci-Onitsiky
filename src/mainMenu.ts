@@ -1,4 +1,4 @@
-import { handleRiceCookersMenu } from "./feature/actions/handling";
+import { cookMenu, handleRiceCookersMenu } from "./feature/actions/handling";
 import { add } from "./feature/actions/riceCookersAction";
 import { showMenu } from "./feature/utils/utils";
 import * as readline from 'readline-sync';
@@ -27,9 +27,10 @@ function chooseAction(choice: number): void{
         case 2:
             handleRiceCookersMenu();
         case 3:
-            console.log("cook");
+            cookMenu();
         case 4:
             console.log("Goodbye !");
+            return;
     }
 }
 
