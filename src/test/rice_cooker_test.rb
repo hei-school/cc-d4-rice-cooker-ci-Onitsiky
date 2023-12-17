@@ -3,9 +3,9 @@ require_relative '../main/feature/handling/handle_rc'
 require_relative '../main/model/rice_cooker'
 
 class Test < Minitest::Test
+    RcHandler.add(1, true)
+    RcHandler.add(2, false)
     def test_add_rice_cooker
-        RcHandler.add(1, true)
-        RcHandler.add(2, false)
         assert(2 == RcHandler.rc_list.size)
     end
 
