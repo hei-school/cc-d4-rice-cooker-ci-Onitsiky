@@ -10,13 +10,13 @@ test('Add new rice cooker to list', () => {
 
 test('Change rice cooker state', () => {
     add(1, false);
+    let expected = new RiceCooker(1, true);
+    expected.isCooking = true;
+    expected.isPlugged = true;
+
     changeState(1, "isOperational", true);
     changeState(1, "isPlugged", true);
     changeState(1, "isCooking", true);
-
-    let expected: RiceCooker = new RiceCooker(1, true);
-    expected.isCooking = true;
-    expected.isPlugged = true;
     expect(getRiceCookerById(1)).toStrictEqual(expected);
 })
 
