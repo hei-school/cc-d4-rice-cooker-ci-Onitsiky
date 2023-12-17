@@ -37,3 +37,9 @@ You can install rubocop [here](https://docs.rubocop.org/rubocop/1.58/installatio
 ```shell
     rubocop
 ```
+
+## Workflows
+I used [Circle CI](https://circleci.com/) to run my workflows.
+
+The workflows configuration file is viewable in _.circleci/config.yml_. Here it only aims at running
+tests.
