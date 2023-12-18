@@ -6,7 +6,7 @@ import {
   getRiceCookerById,
   getRiceCookersList,
   startCooking
-} from "../feature/actions/riceCookersAction";
+} from '../feature/actions/riceCookersAction'
 
 describe('Test rice cooker action', () => {
   test('Add new rice cooker to list', () => {
