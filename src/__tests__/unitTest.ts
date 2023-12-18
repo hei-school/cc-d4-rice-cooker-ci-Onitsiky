@@ -1,6 +1,12 @@
-import { add, getRiceCookersList, changeState, getRiceCookerById, startCooking } from '../main/feature/actions/riceCookersAction'
-import { RiceCooker } from '../main/model/RiceCooker'
-import { describe, test, expect } from '@jest/globals'
+import { RiceCooker } from '../model/RiceCooker'
+import '@jest/globals'
+import {
+  add,
+  changeState,
+  getRiceCookerById,
+  getRiceCookersList,
+  startCooking
+} from "../feature/actions/riceCookersAction";
 
 describe('Test rice cooker action', () => {
   test('Add new rice cooker to list', () => {

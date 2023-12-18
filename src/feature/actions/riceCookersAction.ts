@@ -17,18 +17,18 @@ export const getRiceCookerById: (id: number) => RiceCooker | undefined = (id: nu
 }
 
 export const changeState: (id: number, targetAttribute: string, state: boolean) => void = (id: number, targetAttribute: string, state: boolean) => {
-  const targettedRiceCooker: RiceCooker | undefined = getRiceCookerById(id)
-  if (targettedRiceCooker != null) {
-    const index = riceCookers.findIndex((rc) => rc.id === targettedRiceCooker?.id)
+  const targetedRiceCooker: RiceCooker | undefined = getRiceCookerById(id)
+  if (targetedRiceCooker != null) {
+    const index = riceCookers.findIndex((rc) => rc.id === targetedRiceCooker?.id)
     if (targetAttribute === 'isOperational') {
-      targettedRiceCooker.isOperational = state
-      riceCookers[index] = targettedRiceCooker
+      targetedRiceCooker.isOperational = state
+      riceCookers[index] = targetedRiceCooker
     } else if (targetAttribute === 'isPlugged') {
-      targettedRiceCooker.isPlugged = state
-      riceCookers[index] = targettedRiceCooker
+      targetedRiceCooker.isPlugged = state
+      riceCookers[index] = targetedRiceCooker
     } else if (targetAttribute === 'isCooking') {
-      targettedRiceCooker.isCooking = state
-      riceCookers[index] = targettedRiceCooker
+      targetedRiceCooker.isCooking = state
+      riceCookers[index] = targetedRiceCooker
     } else console.log('The target attribute is not valid')
   } else {
     console.log(`The rice cooker with id ${id} does not exist.`)
