@@ -1,0 +1,31 @@
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      - image: circleci/openjdk:11-jdk
+    steps:
+      - checkout
+      - run:
+          name: Set up Kotlin
+          command: |
+            curl -sSl https://get.sdkman.io | bash
+            source "$HOME/.sdkman/bin/sdkman-init.sh"
+            sdk install kotlin
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "build.gradle.kts" }}
+            - v1-dependencies-
+      - run:
+          name: Download dependencies
+          command: ./gradlew downloadDependencies
+
+      - save_caches:
+          paths:
+            - ~/.gradle
+          key: v1-dependencies-{{ checksum "build.gradle.kts" }}
+
+      - eun:
+          name: Run tests
+          command: ./gradlew test
+
